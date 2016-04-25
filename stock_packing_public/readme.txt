@@ -15,5 +15,5 @@ error_id.txt => 解析有問題的股票代碼
 
 重新執行 Quarterly_Analysis.exe 時，請將output的.txt刪除
 
-3.新增 Revenue.exe 月營收創新高快報
+4.新增 Revenue.exe 月營收創新高快報
 xml 檔存放在revenue 資料夾內
