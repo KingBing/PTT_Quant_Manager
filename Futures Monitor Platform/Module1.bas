@@ -40,12 +40,12 @@ Sub update_TF()
     Dim strSQL As String
     Dim output As Variant
     
-    strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" & "Data Source=" & ThisWorkbook.Path & Application.PathSeparator & "Monitor platform 201503 for APP.accdb;"
-    AdoConn.Open strConn
+    strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" & "Data Source=" & ThisWorkbook.Path & Application.PathSeparator & "Monitor platform .accdb;" '硈钡database㎝source
+    AdoConn.Open strConn  'excel硈钡database
     
-    Set WBN = Workbooks("Monitor Platform 201503 for APP.xlsm")
-    Set  = Workbooks("Monitor Platform 201503 for APP.xlsm").Sheets("")
-    Set TF = Workbooks("Monitor Platform 201503 for APP.xlsm").Sheets("TF")
+    Set WBN = Workbooks("Monitor Platform .xlsm")
+    Set  = Workbooks("Monitor Platform .xlsm").Sheets("")
+    Set TF = Workbooks("Monitor Platform .xlsm").Sheets("TF")
     
     WBN.Activate
     
@@ -59,7 +59,7 @@ Sub update_TF()
         
         On Error GoTo 100
         
-        For i = 3 To 257
+        For i = 3 To 11
         
             ID = .Cells(i, 2).Value
             
@@ -67,10 +67,10 @@ Sub update_TF()
                 ErrNumber = 100
             Else
                 dummy = .Cells(i, 3).Value
-                strSQL = "SELECT TOP 1 丁,程蔼基,程基 FROM " & ID & " ORDER BY 丁 DESC"
-                WBN.Sheets("temp").Cells(1, 1).CopyFromRecordset AdoConn.Execute(strSQL)
+                strSQL = "SELECT TOP 1 丁,程蔼基,程基 FROM " & ID & " ORDER BY 丁 DESC"      'select逆 'fromぐ或table 'orderby逼 'desnど经经逼
+                WBN.Sheets("temp").Cells(1, 1).CopyFromRecordset AdoConn.Execute(strSQL)   'ら戳рselect狥﹁禟1,1
                 
-                If dummy <> Sheets("temp").Cells(1, 1).Value And Day(.Cells(1, 3).Value) <> Day(dummy) Then
+                If dummy <> Sheets("temp").Cells(1, 1).Value And Day(.Cells(1, 3).Value) <> Day(dummy) Then '瞷ら戳㎝db籔筁worksheetら戳ぃ妓
                     ErrNumber = 200
                     strSQL = "INSERT INTO " & ID & "(丁,秨絃基,程蔼基,程基,Μ絃基) VALUES(#" & TF.Cells(i, 3).Value & "#," & _
                     TF.Cells(i, 5).Value & "," & _
@@ -78,7 +78,9 @@ Sub update_TF()
                     TF.Cells(i, 7).Value & "," & _
                     TF.Cells(i, 8).Value & ")"
                     AdoConn.Execute strSQL
-
+                    
+                    'insertintosql粂猭峨wsdatadb柑
+                    
                 ElseIf dummy = Sheets("temp").Cells(1, 1).Value Then
                     ErrNumber = 210
                     If .Cells(i, 6).Value > WBN.Sheets("temp").Cells(1, 2).Value Then
@@ -96,7 +98,7 @@ Sub update_TF()
                 End If
             End If
             
-            '3らず程蔼程
+            '3らず程蔼程   'db匡ㄓws
             ErrNumber = 300
             strSQL = "SELECT LAST(丁) FROM (SELECT TOP 3 * FROM " & ID & " ORDER BY 丁 DESC)"
             AdoConn.Execute strSQL
@@ -237,29 +239,32 @@ Exit Sub
     Set  = Nothing
     Set TF = Nothing
     
+    '笿岿粇excel笆闽超
+    
     AdoConn.Close
     ThisWorkbook.Save
     msg = Err.Description & " ErrNumber is " & ErrNumber & " i=" & i & "叫秨郎"
-    email_err
+    Hotmail_err
     ThisWorkbook.Close
 End Sub
 
-Sub update_FS()
+Sub update_yeswinRTD()  '代刚じRTDぇノ硚
+
     Dim i As Integer
     Dim ID As String
     Dim dummy As Date
-    Dim WBN As Object,  As Object, FS As Object
+    Dim WBN As Object,  As Object, yeswinRTD As Object
     Dim AdoConn As New ADODB.Connection
     Dim strConn As String
     Dim strSQL As String
     Dim output As Variant
     
-    strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" & "Data Source=" & ThisWorkbook.Path & Application.PathSeparator & "Monitor platform 201503 for APP.accdb;"
+    strConn = "Provider=Microsoft.ACE.OLEDB.12.0;" & "Data Source=" & ThisWorkbook.Path & Application.PathSeparator & "Monitor platform.accdb;"
     AdoConn.Open strConn
     
-    Set WBN = Workbooks("Monitor Platform 201503 for APP.xlsm")
-    Set  = Workbooks("Monitor Platform 201503 for APP.xlsm").Sheets("")
-    Set FS = Workbooks("Monitor Platform 201503 for APP.xlsm").Sheets("FS")
+    Set WBN = Workbooks("Monitor Platform.xlsm")
+    Set  = Workbooks("Monitor Platform.xlsm").Sheets("")
+    Set yeswinRTD = Workbooks("Monitor Platform.xlsm").Sheets("yeswinRTD")
     
     WBN.Activate
     
@@ -273,7 +278,7 @@ Sub update_FS()
         
         On Error GoTo 100
         
-        For i = 258 To 279
+        For i = 13 To 13
         
             ID = .Cells(i, 2).Value
             
@@ -286,11 +291,11 @@ Sub update_FS()
                 
                 If dummy <> Sheets("temp").Cells(1, 1).Value And Day(.Cells(1, 3).Value) <> Day(dummy) Then
                     ErrNumber = 1200
-                    strSQL = "INSERT INTO " & ID & "(丁,秨絃基,程蔼基,程基,Μ絃基) VALUES(#" & FS.Cells(i - 255, 3).Value & "#," & _
-                    FS.Cells(i - 255, 5).Value & "," & _
-                    FS.Cells(i - 255, 6).Value & "," & _
-                    FS.Cells(i - 255, 7).Value & "," & _
-                    FS.Cells(i - 255, 8).Value & ")"
+                    strSQL = "INSERT INTO " & ID & "(丁,秨絃基,程蔼基,程基,Μ絃基) VALUES(#" & yeswinRTD.Cells(i, 3).Value & "#," & _
+                    yeswinRTD.Cells(i, 5).Value & "," & _
+                    yeswinRTD.Cells(i, 6).Value & "," & _
+                    yeswinRTD.Cells(i, 7).Value & "," & _
+                    yeswinRTD.Cells(i, 8).Value & ")"
                     AdoConn.Execute strSQL
 
                 ElseIf dummy = Sheets("temp").Cells(1, 1).Value Then
@@ -439,7 +444,7 @@ Sub update_FS()
     End With
     Set WBN = Nothing
     Set  = Nothing
-    Set FS = Nothing
+    Set yeswinRTD = Nothing
     
     AdoConn.Close
     ErrNumber = 1400
@@ -449,12 +454,12 @@ Exit Sub
 100:
     Set WBN = Nothing
     Set  = Nothing
-    Set FS = Nothing
+    Set yeswinRTD = Nothing
     
     AdoConn.Close
     ThisWorkbook.Save
     msg = Err.Description & " ErrNumber is " & ErrNumber & " i=" & i & "叫秨郎"
-    email_err
+    Hotmail_err
     ThisWorkbook.Close
 End Sub
 
@@ -668,7 +673,7 @@ Exit Sub
     AdoConn.Close
     ThisWorkbook.Save
     msg = Err.Description & " ErrNumber is " & ErrNumber & " i=" & i & "叫秨郎"
-    email_err
+    Hotmail_err
     ThisWorkbook.Close
 End Sub
 
@@ -681,13 +686,13 @@ Sub notify()
     flat = 0
     ErrNumber = 0
     
-    Set WBN = Workbooks("Monitor Platform 201503 for APP.xlsm")
+    Set WBN = Workbooks("Monitor Platform.xlsm")
     WBN.Activate
     
     On Error GoTo 100
     If flat = 0 Then
         With WBN.Sheets("")
-            For i = 3 To 279
+            For i = 13 To 13
                 
                 If .Cells(i, 6).Value = "--" Or .Cells(i, 7).Value = "--" Then
                     ErrNumber = 500
@@ -713,7 +718,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                         
                     ElseIf .Cells(i, 6).Value > .Cells(i, 49).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 50).Value) Then  '承2 Years穝蔼
                         msg = "[2Y-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 50).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 49).Value, 2))
@@ -734,7 +739,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                    
                     ElseIf .Cells(i, 6).Value > .Cells(i, 44).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 45).Value) Then  '承1 Years穝蔼
                         msg = "[1Y-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 45).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 44).Value, 2))
@@ -753,7 +758,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                    
                     ElseIf .Cells(i, 6).Value > .Cells(i, 39).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 40).Value) Then  '承2 Quarters穝蔼
                         msg = "[2Q-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 40).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 39).Value, 2))
@@ -770,7 +775,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                   
                     ElseIf .Cells(i, 6).Value > .Cells(i, 34).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 35).Value) Then  '承1 Quarter穝蔼
                         msg = "[1Q-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 35).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 34).Value, 2))
@@ -785,7 +790,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
              
                     ElseIf .Cells(i, 6).Value > .Cells(i, 29).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 30).Value) Then  '承2 Months穝蔼
                         msg = "[2M-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 30).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 29).Value, 2))
@@ -798,7 +803,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
             
                     ElseIf .Cells(i, 6).Value > .Cells(i, 24).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 25).Value) Then  '承1 Month穝蔼
                         msg = "[1M-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 25).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 24).Value, 2))
@@ -809,7 +814,7 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
              
                     ElseIf .Cells(i, 6).Value > .Cells(i, 19).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 20).Value) Then  '承2 Weeks穝蔼
                         msg = "[2W-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 20).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 19).Value, 2))
@@ -818,14 +823,14 @@ Sub notify()
                         .Cells(i, 19).Value = .Cells(i, 6).Value    '2 Weeks程蔼基穝
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                  
                     ElseIf .Cells(i, 6).Value > .Cells(i, 14).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 15).Value) Then  '承1 Week穝蔼
                         msg = "[1W-High] " & CStr(.Cells(i, 2).Value) & "  " & CStr(.Cells(i, 15).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 14).Value, 2))
                         ErrNumber = 517
                         .Cells(i, 15).Value = .Cells(i, 3).Value    '1 Week程蔼ら戳穝
                         .Cells(i, 14).Value = .Cells(i, 6).Value    '1 Week程蔼基穝
-                        email_short
+                        Hotmail_short
                     End If
                 End If
             
@@ -853,7 +858,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                         
                     ElseIf .Cells(i, 7).Value < .Cells(i, 51).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 52).Value) Then  '承2 Years穝
                         msg = "[2Y-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 52).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 51).Value, 2))
@@ -874,7 +879,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                
                     ElseIf .Cells(i, 7).Value < .Cells(i, 46).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 47).Value) Then '承1 Years穝
                         msg = "[1Y-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 47).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 46).Value, 2))
@@ -893,7 +898,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                
                     ElseIf .Cells(i, 7).Value < .Cells(i, 41).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 42).Value) Then  '承2 Quarters穝
                         msg = "[2Q-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 42).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 41).Value, 2))
@@ -910,7 +915,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                 
                     ElseIf .Cells(i, 7).Value < .Cells(i, 36).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 37).Value) Then  '承1 Quarter穝
                         msg = "[1Q-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 37).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 36).Value, 2))
@@ -925,7 +930,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
             
                     ElseIf .Cells(i, 7).Value < .Cells(i, 31).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 32).Value) Then  '承2 Months穝
                         msg = "[2M-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 32).Value) & " ら程蔼翴 " & CStr(WorksheetFunction.Round(.Cells(i, 31).Value, 2))
@@ -938,7 +943,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
               
                     ElseIf .Cells(i, 7).Value < .Cells(i, 26).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 27).Value) Then  '承1 Month穝
                         msg = "[1M-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 27).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 26).Value, 2))
@@ -949,7 +954,7 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                
                     ElseIf .Cells(i, 7).Value < .Cells(i, 21).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 22).Value) Then  '承2 Weeks穝
                         msg = "[2W-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 22).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 21).Value, 2))
@@ -958,14 +963,14 @@ Sub notify()
                         .Cells(i, 21).Value = .Cells(i, 7).Value    '2 Weeks程基穝
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
               
                     ElseIf .Cells(i, 7).Value < .Cells(i, 16).Value And CDate(.Cells(i, 3).Value) <> CDate(.Cells(i, 17).Value) Then '承1 Week穝
                         msg = "[1W-Low] " & CStr(.Cells(i, 2).Value) & " 禴瘆 " & CStr(.Cells(i, 17).Value) & " ら程翴 " & CStr(WorksheetFunction.Round(.Cells(i, 16).Value, 2))
                         ErrNumber = 617
                         .Cells(i, 17).Value = .Cells(i, 3).Value    '1 Week程ら戳穝
                         .Cells(i, 16).Value = .Cells(i, 7).Value    '1 Week程基穝
-                        email_short
+                        Hotmail_short
                     End If
                 End If
                
@@ -973,14 +978,14 @@ Sub notify()
         End With
         flat = flat + 1
     End If
-    Application.OnTime CDate(Now) + TimeValue("00:30:00"), "notify", , True
-    email_normal
+    Application.OnTime CDate(Now) + TimeValue("00:30:00"), "notify", , True '–30だい浪琩呸胯
+    Hotmail_normal    '璝才呸胯emailnormail
     Set WBN = Nothing
 Exit Sub
     
 100:
     msg = Err.Description & " " & CStr(Now) & " ErrNumber is " & ErrNumber & " i=" & i
-    email_err
+    Hotmail_err
     Set WBN = Nothing
 End Sub
 
@@ -1285,13 +1290,13 @@ Sub notify_Ryan()
         flat = flat + 1
     End If
     Application.OnTime CDate(Now) + TimeValue("00:05:00"), "notify_Ryan", , True
-    email_normal
+    Hotmail_normal
     Set WBN = Nothing
 Exit Sub
     
 100:
     msg = Err.Description & " " & CStr(Now) & " ErrNumber is " & ErrNumber & " i=" & i
-    email_err
+    Hotmail_err
     Set WBN = Nothing
 End Sub
 
@@ -1306,26 +1311,26 @@ Private Sub email_short()
     Set objOutlookMsg = objOutlook.CreateItem(0)
     
     With objOutlookMsg
-        '.Display
-        .To = "jay.hsieh@fubon.com;jay.cc.hsieh@gmail.com;"
-        '.BCC = "jay.cc.hsieh@gmail.com;"
-        '.To = "strange0124@hotmail.com; jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com;  daniel.tzeng@fubon.com; george.tseng@fubon.com; jonathan (jonathan.chung@fubon.com);"
-        .Subject = msg
+        .Display
+        .To = "yj-chen@outlook.com;02153440@scu.edu.tw;yungrrrr@gmail.com;"
+        
+        .Subject = "auto_msg_short"
         .Body = "[Auto Message]"
-        .Body = .Body & Chr(10) & "Best Regards," & Chr(10) & _
-                  "----------------------------------------------" & Chr(10) & _
-                  "谅狽(Jay Hsieh)" & Chr(10) & _
-                  "Research Department" & Chr(10) & _
-                  "Fubon Futures Co., Ltd." & Chr(10) & _
-                  "Email jay.hsieh@fubon.com" & Chr(10) & _
-                  "TEL: +886 2 2388 2626.ext 253" & Chr(10) & _
-                  "FAX: +886 2 2371 8064" & Chr(10) & _
-                  "----------------------------------------------"
-        .send
+        .Body = .Body & Chr(10) & Chr(10) & _
+                  "This is auto e-mail testing" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "Sincerely yours" & Chr(10) & _
+                  "-------------------------------------------------" & Chr(10) & _
+                  "Peter YJ" & Chr(10) & _
+                  "Email yj-chen@outlook.com.com" & Chr(10) & _
+                  "-------------------------------------------------"
+        .Send
     End With
     
-    msg = ""
-    Set objOutlookMsg = Nothing
+    msg = ""   '睲
+    Set objOutlookMsg = Nothing  '夹临ぃ﹚,睦癘拘砰
     Set objOutlook = Nothing
 End Sub
 
@@ -1341,21 +1346,21 @@ Private Sub email_long()
     With objOutlookMsg
         '.Display
         
-        '.To = " jay.cc.hsieh@gmail.com;" '"jay.hsieh@fubon.com;"
-        '.BCC = "strange0124@hotmail.com; jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com; daniel.tzeng@fubon.com; george.tseng@fubon.com;"
-        '.To = "strange0124@hotmail.com; jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com; daniel.tzeng@fubon.com; george.tseng@fubon.com;"
-        .Subject = msg
+        .To = "02153440@scu.edu.tw;"
+        
+        .Subject = "auto_msg_long"
         .Body = "[Auto Message]"
-        .Body = .Body & Chr(10) & "Best Regards," & Chr(10) & _
-                  "----------------------------------------------" & Chr(10) & _
-                  "谅狽(Jay Hsieh)" & Chr(10) & _
-                  "Research Department" & Chr(10) & _
-                  "Fubon Futures Co., Ltd." & Chr(10) & _
-                  "Email jay.hsieh@fubon.com" & Chr(10) & _
-                  "TEL: +886 2 2388 2626.ext 253" & Chr(10) & _
-                  "FAX: +886 2 2371 8064" & Chr(10) & _
-                  "----------------------------------------------"
-        .send
+        .Body = .Body & Chr(10) & Chr(10) & _
+                  "This is auto e-mail testing" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "Sincerely yours" & Chr(10) & _
+                  "-------------------------------------------------" & Chr(10) & _
+                  "Peter YJ" & Chr(10) & _
+                  "Email yj-chen@outlook.com.com" & Chr(10) & _
+                  "-------------------------------------------------"
+        .Send
     End With
     
     msg = ""
@@ -1374,20 +1379,21 @@ Private Sub email_err()
     
     With objOutlookMsg
         '.Display
-        .BCC = "jay.cc.hsieh@gmail.com; jay.hsieh@fubon.com;"
-        '.To = "jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com;"
-        .Subject = msg
+        .To = "02153440@scu.edu.tw;"
+        .CC = "jay.cc.hsieh@gmail.com"
+        .Subject = ""
         .Body = "[Auto Message]"
-        .Body = .Body & Chr(10) & "Best Regards," & Chr(10) & _
-                  "----------------------------------------------" & Chr(10) & _
-                  "谅狽(Jay Hsieh)" & Chr(10) & _
-                  "Research Department" & Chr(10) & _
-                  "Fubon Futures Co., Ltd." & Chr(10) & _
-                  "Email jay.hsieh@fubon.com" & Chr(10) & _
-                  "TEL: +886 2 2388 2626.ext 253" & Chr(10) & _
-                  "FAX: +886 2 2371 8064" & Chr(10) & _
-                  "----------------------------------------------"
-        .send
+        .Body = .Body & Chr(10) & Chr(10) & _
+                  "This is auto e-mail testing" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "Sincerely yours" & Chr(10) & _
+                  "-------------------------------------------------" & Chr(10) & _
+                  "Peter YJ" & Chr(10) & _
+                  "Email yj-chen@outlook.com.com" & Chr(10) & _
+                  "-------------------------------------------------"
+        .Send
     End With
     
     msg = ""
@@ -1405,22 +1411,22 @@ Private Sub email_normal()
     Set objOutlookMsg = objOutlook.CreateItem(0)
     
     With objOutlookMsg
-        '.Display
-        '.To = "jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com;"
-        '.BCC = "jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com;"
-        .BCC = "jay.cc.hsieh@gmail.com;"
-        .Subject = "OK"
+        .Display
+        .To = "02153440@scu.edu.tw;"
+        
+        .Subject = "auto_ok"
         .Body = "[Auto Message]"
-        .Body = .Body & Chr(10) & "Best Regards," & Chr(10) & _
-                  "----------------------------------------------" & Chr(10) & _
-                  "谅狽(Jay Hsieh)" & Chr(10) & _
-                  "Research Department" & Chr(10) & _
-                  "Fubon Futures Co., Ltd." & Chr(10) & _
-                  "Email jay.hsieh@fubon.com" & Chr(10) & _
-                  "TEL: +886 2 2388 2626.ext 253" & Chr(10) & _
-                  "FAX: +886 2 2371 8064" & Chr(10) & _
-                  "----------------------------------------------"
-        .send
+        .Body = .Body & Chr(10) & Chr(10) & _
+                  "This is auto e-mail testing" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "" & Chr(10) & _
+                  "Sincerely yours" & Chr(10) & _
+                  "-------------------------------------------------" & Chr(10) & _
+                  "Peter YJ" & Chr(10) & _
+                  "Email yj-chen@outlook.com.com" & Chr(10) & _
+                  "-------------------------------------------------"
+        .Send
     End With
     
     msg = ""
@@ -1428,37 +1434,137 @@ Private Sub email_normal()
     Set objOutlook = Nothing
 End Sub
 
-Private Sub email_Ryan()
-    'Outlook Objects
-    Dim objOutlook As Object
-    Dim objOutlookMsg As Object
-    
-    'Excel Objects
-    Set objOutlook = CreateObject("outlook.application")
-    Set objOutlookMsg = objOutlook.CreateItem(0)
-    
-    With objOutlookMsg
-        '.Display
-        .To = "jay.hsieh@fubon.com; hola2300@yahoo.com.tw;"
-        .BCC = "jay.cc.hsieh@gmail.com;"
-        '.To = "strange0124@hotmail.com; jay.hsieh@fubon.com; jay.cc.hsieh@gmail.com;  daniel.tzeng@fubon.com; george.tseng@fubon.com; jonathan (jonathan.chung@fubon.com);"
-        .Subject = msg
-        .Body = "[Auto Message]"
-        .Body = .Body & Chr(10) & "Best Regards," & Chr(10) & _
-                  "----------------------------------------------" & Chr(10) & _
-                  "谅狽(Jay Hsieh)" & Chr(10) & _
-                  "Research Department" & Chr(10) & _
-                  "Fubon Futures Co., Ltd." & Chr(10) & _
-                  "Email jay.hsieh@fubon.com" & Chr(10) & _
-                  "TEL: +886 2 2388 2626.ext 253" & Chr(10) & _
-                  "FAX: +886 2 2371 8064" & Chr(10) & _
-                  "----------------------------------------------"
-        .send
+
+Private Sub Hotmail_short()
+    '============================================================================================
+    'パ惠ㄏノCDOン絪糶VBA祘Α絏玡斗砞﹚まノ"Microsoft CDO for Windows 2000 Library"
+    '============================================================================================
+    Dim Mail As CDO.Message
+    Set Mail = New CDO.Message
+    With Mail.Configuration.Fields
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp-mail.outlook.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "yungrrrr@hotmail.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "dtshomg100"
+        .Update
     End With
+
+    With Mail
+        .Subject = "Hotmail_short" & msg
+        .From = "okihuvguyy@gmail.com"
+        .To = "yungrrrr@gmail.com;jay.cc.hsieh@gmail.com"
+        .CC = ""
+        .HTMLBody = msg
+        .BodyPart.Charset = "utf-8"
+        .HTMLBodyPart.Charset = "utf-8"
+        .Send
+    End With
+    'MsgBox "獺ン盚", vbInformation, "盚"
+
+    Set Mail = Nothing
     
-    msg = ""
-    Set objOutlookMsg = Nothing
-    Set objOutlook = Nothing
+    End Sub
+    Private Sub Hotmail_normal()
+    '============================================================================================
+    'パ惠ㄏノCDOン絪糶VBA祘Α絏玡斗砞﹚まノ"Microsoft CDO for Windows 2000 Library"
+    '============================================================================================
+    Dim Mail As CDO.Message
+    Set Mail = New CDO.Message
+    With Mail.Configuration.Fields
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp-mail.outlook.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "yungrrrr@hotmail.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "dtshomg100"
+        .Update
+    End With
+
+    With Mail
+        .Subject = "ok"
+        .From = "yungrrrr@hotmail.com"
+        .To = "yungrrrr@gmail.com"
+        .CC = ""
+        .HTMLBody = ""
+        .BodyPart.Charset = "utf-8"
+        .HTMLBodyPart.Charset = "utf-8"
+        .Send
+    End With
+    'MsgBox "獺ン盚", vbInformation, "盚"
+
+    Set Mail = Nothing
 End Sub
+
+Private Sub Hotmail_long()
+    '============================================================================================
+    'パ惠ㄏノCDOン絪糶VBA祘Α絏玡斗砞﹚まノ"Microsoft CDO for Windows 2000 Library"
+    '============================================================================================
+    Dim Mail As CDO.Message
+    Set Mail = New CDO.Message
+    With Mail.Configuration.Fields
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp-mail.outlook.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "yungrrrr@hotmail.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "dtshomg100"
+        .Update
+    End With
+
+    With Mail
+        .Subject = "Hotmail_long" & msg
+        .From = "okihuvguyy@gmail.com"
+        .To = "yungrrrr@gmail.com"
+        .CC = ""
+        .HTMLBody = msg
+        .BodyPart.Charset = "utf-8"
+        .HTMLBodyPart.Charset = "utf-8"
+        .Send
+    End With
+    'MsgBox "獺ン盚", vbInformation, "盚"
+
+    Set Mail = Nothing
+End Sub
+
+
+Private Sub Hotmail_err()
+    '============================================================================================
+    'パ惠ㄏノCDOン絪糶VBA祘Α絏玡斗砞﹚まノ"Microsoft CDO for Windows 2000 Library"
+    '============================================================================================
+    Dim Mail As CDO.Message
+    Set Mail = New CDO.Message
+    With Mail.Configuration.Fields
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpusessl") = True
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "smtp-mail.outlook.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = 25
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendusername") = "yungrrrr@hotmail.com"
+        .Item("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "dtshomg100"
+        .Update
+    End With
+
+    With Mail
+        .Subject = "Hotmail_err" & msg
+        .From = "okihuvguyy@gmail.com"
+        .To = "yungrrrr@gmail.com"
+        .CC = ""
+        .HTMLBody = msg
+        .BodyPart.Charset = "utf-8"
+        .HTMLBodyPart.Charset = "utf-8"
+        .Send
+    End With
+    'MsgBox "獺ン盚", vbInformation, "盚"
+
+    Set Mail = Nothing
+End Sub
+
+
+
 
 
